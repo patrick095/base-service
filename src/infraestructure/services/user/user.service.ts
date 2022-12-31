@@ -69,4 +69,17 @@ export class UserService {
     async remove(id: string): Promise<void> {
         await this.usersRepository.delete(id);
     }
+
+    async update(user: Partial<userInterface>): Promise<boolean> {
+        const userOld = await this.findById(user._id);
+        const isValid =
+            user._id === userOld._id && user.email === userOld.email;
+
+        if (isValid) {
+            const updated = await this.usersRepository.update(user._id, user);
+            return updated.affected > 0;
+        }
+
+        throw new UserInvalidException();
+    }
 }

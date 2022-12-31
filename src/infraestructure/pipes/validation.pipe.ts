@@ -34,10 +34,7 @@ export class CustomValidationPipe implements PipeTransform {
     }
 
     private isEmpty(value: any) {
-        if (Object.keys(value).length === 0) {
-            return true;
-        }
-        return false;
+        return Object.keys(value).length === 0;
     }
 
     private formatErrors(errors: any[]) {
