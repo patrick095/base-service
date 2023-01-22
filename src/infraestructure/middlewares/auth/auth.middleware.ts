@@ -3,11 +3,7 @@ import { TokenService } from 'src/infraestructure/services/token/token.service';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-    private secret: string;
-
-    constructor(private tokenService: TokenService) {
-        this.secret = process.env.SECRET;
-    }
+    constructor(private tokenService: TokenService) {}
 
     public use(req: any, res: any, next: () => void) {
         const authHeader = req.headers.authorization as string;
@@ -25,13 +21,17 @@ export class AuthMiddleware implements NestMiddleware {
             return res.status(401).json({ erro: 'malformed token!' });
         }
 
-        const data = this.tokenService.validateToken(token);
+        const dataToken = this.tokenService.validateToken(token);
 
-        if (!data) {
+        if (!dataToken) {
             return res.status(401).json({ erro: 'invalid token!' });
         }
 
-        req.body._id = data.id;
+        if (req.body._id) {
+            req.body._id = dataToken.id;
+        } else if (req.body.user._id) {
+            req.body.user._id = dataToken.id;
+        }
 
         return next();
     }
