@@ -28,8 +28,5 @@ export class User implements userInterface {
     @Index({ unique: true })
     email: string;
 
-    @Column()
-    playerId: string;
-
     $or: Array<any>;
 }

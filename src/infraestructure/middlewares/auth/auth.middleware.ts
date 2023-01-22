@@ -1,4 +1,10 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
+import {
+    IncompleteTokenException,
+    InvalidTokenException,
+    MalformedTokenException,
+    TokenNotFoundException,
+} from 'src/infraestructure/exceptions/token-exceptions';
 import { TokenService } from 'src/infraestructure/services/token/token.service';
 
 @Injectable()
@@ -8,23 +14,23 @@ export class AuthMiddleware implements NestMiddleware {
     public use(req: any, res: any, next: () => void) {
         const authHeader = req.headers.authorization as string;
         if (!authHeader) {
-            return res.status(401).json({ erro: 'token not found!' });
+            throw new TokenNotFoundException();
         }
 
         const parts = authHeader.split(' ');
         if (parts.length !== 2) {
-            return res.status(401).json({ erro: 'incomplete token!' });
+            throw new IncompleteTokenException();
         }
         const [scheme, token] = parts;
 
         if (!/^Bearer$/i.test(scheme)) {
-            return res.status(401).json({ erro: 'malformed token!' });
+            throw new MalformedTokenException();
         }
 
         const dataToken = this.tokenService.validateToken(token);
 
         if (!dataToken) {
-            return res.status(401).json({ erro: 'invalid token!' });
+            throw new InvalidTokenException();
         }
 
         if (req.body._id) {

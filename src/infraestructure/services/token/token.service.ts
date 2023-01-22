@@ -3,6 +3,7 @@ import { ObjectID } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 
 import { TokenInterface } from 'src/domain/user/interfaces/token.interface';
+import { InvalidTokenException } from 'src/infraestructure/exceptions/token-exceptions';
 
 @Injectable()
 export class TokenService {
@@ -28,10 +29,21 @@ export class TokenService {
     }
 
     public validateToken(token: string) {
-        const data = this.jwt.verify(token, { secret: this.secret });
+        try {
+            const data = this.jwt.verify(token, { secret: this.secret });
 
-        if (data) return data;
+            return data;
+        } catch {
+            throw new InvalidTokenException();
+        }
+    }
 
-        return null;
+    public refreshToken(token: string) {
+        try {
+            const data = this.validateToken(token);
+            return this.generateToken(data.id);
+        } catch {
+            throw new InvalidTokenException();
+        }
     }
 }

@@ -7,6 +7,7 @@ import {
     Put,
     UsePipes,
 } from '@nestjs/common';
+import { refreshTokenDTO } from 'src/domain/user/dtos/refresh-token.dto';
 import { SigninDto } from 'src/domain/user/dtos/signin.dto';
 import { SignupDto } from 'src/domain/user/dtos/signup.dto';
 import { UpdatePasswordDto } from 'src/domain/user/dtos/update-password.dto';
@@ -68,5 +69,11 @@ export class UserController {
     @UsePipes(new CustomValidationPipe())
     updatePassword(@Body() { id, oldPass, newPass }: UpdatePasswordDto) {
         return this.userService.updatePassword(id, oldPass, newPass);
+    }
+
+    @Get('/refresh-token')
+    @UsePipes(new CustomValidationPipe())
+    refreshToken(@Body() { token }: refreshTokenDTO) {
+        return this.tokenService.refreshToken(token);
     }
 }

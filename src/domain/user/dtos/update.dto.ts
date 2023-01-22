@@ -4,7 +4,7 @@ import { userInterface } from '../interfaces/uset.interface';
 
 export class UpdateDto implements Partial<userInterface> {
     @IsNotEmpty()
-    _id?: ObjectID;
+    _id: ObjectID;
 
     @IsNotEmpty()
     @MaxLength(32)
