@@ -1,73 +1,106 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Base Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<legend>Aplicação base para criar um service onde seja necessário utilizar usuários</legend>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Configurações
 
-## Description
+-   Renomear o arquivo .env.example para .env
+-   Preencher os dados de acordo com o seu banco de dados
+-   Rodar o comando npm install
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Comandos
 
-## Installation
+-   npm start
+    -   Inicia uma isntância da aplicação
+-   npm run dev
+    -   Inicia uma instância da aplicação em modo watch
+-   npm run build
+    -   Faz o build da aplicação na pasta dist
+-   npm run prod
+    -   Inicia uma instância da aplicação utilizando os arquivos buildados
 
-```bash
-$ npm install
-```
+### Rotas
 
-## Running the app
+-   GET - /user/signin
 
-```bash
-# development
-$ npm run start
+    -   Parâmetros:
+        -   username: string
+        -   password: string
+    -   Resposta (em caso de sucesso):
+        -   ```json
+            {
+                "user": {
+                    "_id": "63cd...",
+                    "firstName": "João",
+                    "lastName": "Silva",
+                    "username": "j.silva",
+                    "phone": "83999999999"
+                },
+                "token": {
+                    "accessToken": "ey...",
+                    "refreshToken": "ey...",
+                    "tokenType": "Bearer"
+                }
+            }
+            ```
 
-# watch mode
-$ npm run start:dev
+-   POST - /user/signup
 
-# production mode
-$ npm run start:prod
-```
+    -   Parâmetros:
+        -   firstName: string
+        -   lastName: string
+        -   username: string
+        -   email: string
+        -   password: string
+        -   phone: string
+    -   Resposta (em caso de sucesso):
+        -   ```json
+            {
+                "user": {
+                    "_id": "63cd...",
+                    "firstName": "João",
+                    "lastName": "Silva",
+                    "username": "j.silva",
+                    "phone": "83999999999"
+                },
+                "token": {
+                    "accessToken": "ey...",
+                    "refreshToken": "ey...",
+                    "tokenType": "Bearer"
+                }
+            }
+            ```
 
-## Test
+-   PUT - /user/update
 
-```bash
-# unit tests
-$ npm run test
+    -   Parâmetros:
+        -   firstName: string
+        -   lastName: string
+        -   \_id: string
+    -   Resposta (em caso de sucesso):
+        -   ```json
+            true
+            ```
 
-# e2e tests
-$ npm run test:e2e
+-   PATCH - /user/update-password
 
-# test coverage
-$ npm run test:cov
-```
+    -   Parâmetros:
+        -   id: string
+        -   oldPass: string
+        -   newPass: string
+    -   Resposta (em caso de sucesso):
+        -   ```json
+            true
+            ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+-   GET - /user/refresh-token
+    -   Parâmetros:
+        -   token: string
+    -   Resposta (em caso de sucesso):
+        -   ```json
+            {
+                "accessToken": "ey...",
+                "refreshToken": "ey...",
+                "tokenType": "Bearer"
+            }
+            ```
