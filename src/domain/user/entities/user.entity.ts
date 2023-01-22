@@ -8,7 +8,10 @@ export class User implements userInterface {
     _id: ObjectID;
 
     @Column()
-    fullName: string;
+    firstName: string;
+
+    @Column()
+    lastName: string;
 
     @Column()
     @Index({ unique: true })

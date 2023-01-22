@@ -2,8 +2,9 @@ import { ObjectID } from 'typeorm';
 
 export interface userInterface {
     _id?: ObjectID;
+    firstName: string;
+    lastName: string;
     username: string;
-    fullName: string;
     password: string;
     email: string;
     phone: string;

@@ -1,11 +1,14 @@
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
-import { ObjectID } from 'typeorm';
 import { userInterface } from '../interfaces/uset.interface';
 
 export class SignupDto implements userInterface {
     @IsNotEmpty()
-    @MaxLength(64)
-    fullName: string;
+    @MaxLength(32)
+    firstName: string;
+
+    @IsNotEmpty()
+    @MaxLength(32)
+    lastName: string;
 
     @IsNotEmpty()
     @MaxLength(16)
