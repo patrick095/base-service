@@ -13,8 +13,4 @@ export class UpdateDto implements Partial<userInterface> {
     @IsNotEmpty()
     @MaxLength(32)
     lastName: string;
-
-    @IsNotEmpty()
-    @MaxLength(16)
-    password: string;
 }

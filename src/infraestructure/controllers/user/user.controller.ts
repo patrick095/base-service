@@ -47,9 +47,16 @@ export class UserController {
 
     @Post('/signup')
     @UsePipes(new CustomValidationPipe())
-    signup(@Body() user: SignupDto) {
+    async signup(@Body() user: SignupDto) {
         try {
-            return this.userService.create(user);
+            const newUser = await this.userService.create(user);
+
+            const token = this.tokenService.generateToken(newUser._id);
+
+            return {
+                user: newUser,
+                token,
+            };
         } catch {
             throw new UserNotRegisteredException();
         }
